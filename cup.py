@@ -1,4 +1,7 @@
 import time
+import random
+import os
+
 class Team:
     name = ""
 
@@ -7,6 +10,18 @@ class Game:
     team2 = ""
     team1score = 0
     team2score = 0
+    def play(self):
+        self.team1score = random.randint(0, 5)
+        self.team2score = random.randint(0, 5)
+        if self.team1score == self.team2score:
+            self.team1score = self.team1score + 1
+        print(self.team1.name + " " + str(self.team1score) + " - " + str(self.team2score) + " " + self.team2.name)
+        print("")
+    def get_winner(self):
+        if self.team1score < self.team2score:
+            return self.team2
+        else:
+            return self.team1
 
 class Round:
     teams = []
@@ -15,6 +30,7 @@ class Round:
 print("Oh noooooo, one of the teams mysteriously disappeared, give us your name so you can fill in!!!!!!!!")
 time.sleep(0.5)
 UserName = input("name - ")
+os.system("cls")
 
 Names = [
 "Arsenal",
@@ -48,17 +64,24 @@ Names = [
 "Pachuca",
 "Santos Laguna",
 "Tijuana",
-UserName
+UserName + " FC"
 ]
 
 teams = []
 for name in Names:
     team = Team()
     team.name = name
-    teams.append(team) 
+    teams.append(team)
 
 round1 = Round()
 round1.teams = teams
 round1.number = 1
 for i in range(0, int(len(round1.teams)/2)):
-    print(i)
+    print("game " + str(i + 1))
+    game1 = Game()
+    game1.team1 = random.choice(round1.teams)
+    round1.teams.remove(game1.team1)
+    game1.team2 = random.choice(round1.teams)
+    round1.teams.remove(game1.team2)
+    game1.play()
+    
