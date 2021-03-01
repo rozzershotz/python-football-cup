@@ -26,6 +26,12 @@ class Game:
 class Round:
     teams = []
     number = 0
+    games = []
+    def get_winners(self):
+        winners = []
+        for game in self.games:
+            winners.append(game.get_winner())
+        return winners
 
 print("Oh noooooo, one of the teams mysteriously disappeared, give us your name so you can fill in!!!!!!!!")
 time.sleep(0.5)
@@ -67,21 +73,31 @@ Names = [
 UserName + " FC"
 ]
 
-teams = []
+allteams = []
 for name in Names:
     team = Team()
     team.name = name
-    teams.append(team)
+    allteams.append(team)
 
-round1 = Round()
-round1.teams = teams
-round1.number = 1
-for i in range(0, int(len(round1.teams)/2)):
-    print("game " + str(i + 1))
-    game1 = Game()
-    game1.team1 = random.choice(round1.teams)
-    round1.teams.remove(game1.team1)
-    game1.team2 = random.choice(round1.teams)
-    round1.teams.remove(game1.team2)
-    game1.play()
-    
+teamsinround = allteams
+numberofround = 1
+
+while len(teamsinround) > 0:
+    round1 = Round()
+    round1.teams = teamsinround
+    round1.number = numberofround
+    numberofround = numberofround + 1
+    for i in range(0, int(len(round1.teams)/2)):
+        print("game " + str(i + 1))
+        game1 = Game()
+        game1.team1 = random.choice(round1.teams)
+        round1.teams.remove(game1.team1)
+        game1.team2 = random.choice(round1.teams)
+        round1.teams.remove(game1.team2)
+        game1.play()
+        round1.games.append(game1)
+
+    teamsinround = round1.get_winners()
+    print("going into the next round are: ")
+    for winner in teamsinround:
+        print(winner.name)
